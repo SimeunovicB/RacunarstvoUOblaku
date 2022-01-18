@@ -18,4 +18,4 @@ def increase_counter_field(request):
     counter = Counter.objects.get_or_create(id=1)[0]
     counter.counter_field = counter.counter_field + 1
     counter.save()
-    return HttpResponse(status=200)
+    return HttpResponse(counter.counter_field, status=200)
