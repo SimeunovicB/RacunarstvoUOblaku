@@ -1,0 +1,26 @@
+version: "3.7"
+volumes:
+    postgres-data: {}
+
+services:
+  django:
+    build: .
+    restart: on-failure:10
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./cloud_computing/.env
+    depends_on:
+      - postgres_db
+  
+  postgres_db:
+    image: postgres
+    restart: on-failure
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1111
+      - POSTGRES_DB=cloud1
+    volumes:
+     - postgres-data:/var/lib/postgres   
