@@ -1,0 +1,12 @@
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "hashicorp/bionic64"
+  config.vm.provision :docker
+  config.vm.provision "shell", path:"script.sh"
+  config.vm.provision "shell", path:"install-docker-compose.sh"
+  config.vm.provision "file", source: "../cloud_computing", destination: "cloud_computing"
+  config.vm.provision "file", source: "../poetry.lock", destination: "poetry.lock"
+  config.vm.provision "file", source: "../pyproject.toml", destination: "pyproject.toml"
+
+end

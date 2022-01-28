@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  django1:
+    image: simaphc/cloud_computing_image:latest
+    restart: on-failure:10
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./cloud_computing/.env1
+    links:
+      - postgres_db1
+    depends_on:
+      - postgres_db1
+    volumes:
+      - pdaj_data1:/usr/src
+    networks:
+      - cloud_computing_network
+
+  django2:
+    image: simaphc/cloud_computing_image:latest
+    restart: on-failure:10
+    ports:
+      - "8001:8000"
+    env_file:
+      - ./cloud_computing/.env2
+    links:
+      - postgres_db2
+    depends_on:
+      - postgres_db2
+    volumes:
+      - pdaj_data2:/usr/src
+    networks:
+      - cloud_computing_network
+    
+    
+  postgres_db1:
+    image: postgres
+    restart: on-failure
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1111
+      - POSTGRES_DB=cloud1
+    networks:
+      - cloud_computing_network
+
+  postgres_db2:
+    image: postgres
+    restart: on-failure
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1111
+      - POSTGRES_DB=cloud2
+    networks:
+      - cloud_computing_network
+
+volumes:
+  pdaj_data1:
+  pdaj_data2:
+
+networks:
+  cloud_computing_network:
+    driver: bridge
